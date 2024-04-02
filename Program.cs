@@ -1,12 +1,20 @@
 using ECommerce.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<ApplicationDbContext>(
+ options => {
+     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+     var sqlServerConnectionBuilder = new SqlConnectionStringBuilder(connectionString);
+     sqlServerConnectionBuilder.UserID = "sa";
+     sqlServerConnectionBuilder.Password = "sit@123";
+     options.UseSqlServer(sqlServerConnectionBuilder.ConnectionString);
+ });
 
 var app = builder.Build();
 
@@ -18,13 +26,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
-//app.UseStaticFiles();
+app.UseStaticFiles();
 
-//app.UseRouting();
+app.UseRouting();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
