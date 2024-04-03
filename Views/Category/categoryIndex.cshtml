@@ -1,4 +1,12 @@
 ﻿@model List<Category>
+@if (TempData["status"] != null)
+{
+    <h3>@TempData["status"]</h3>
+    @* <div class="alert alert-success alert-dismissible">
+        <span>Edit Object SuccessFully Completed</span>
+        <button class="" data-bs-dismiss="alert"></button>
+    </div> *@
+}
 
 <html>
   
@@ -15,7 +23,7 @@
                     </svg> Create New Category
                 </a>
             </div>
-           
+
         </div>
     </div>
         <div class="container">
@@ -34,15 +42,41 @@
         <td>@obj.DisplayOrder</td>
         </tr> *@
             <div class="row pt-2 pb-2 mb-1" style="border:1px solid white">
-                <div class="col-6 d-flex align-items-center justify-content-center">
+                <div class="col-3 d-flex align-items-center justify-content-center">
                     @obj.Name
                 </div>
-                <div class="col-6 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+                <div class="col-3 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
                     @obj.DisplayOrder
+                </div>
+                <div class="col-3 d-flex " style="border-left:1px solid white">
+                    <a asp-action="Edit" asp-route-id="@obj.CategoryId" class="btn btn-info w-100" >Edit</a>
+                </div>
+                <div class="col-3 d-flex ">
+                    <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-secondary w-100">Delete</button>
+                </div>
+            </div>
+            <div class="modal" id="modal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body d-inline">
+                            <h5>Are You Sure ?</h5>
+                            <div class="d-inline">
+                                    <a asp-action="Delete" class=" btn btn-primary" asp-route-id="@obj.CategoryId"> Yes</a>
+    
+                                <button data-bs-dismiss="modal" class=" btn btn-secondary">No</button>
+                               </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         }
         </div>
-
+    
     </body>
 </html>
+
+@section scripts{
+    <script>
+     
+    </script>
+}
