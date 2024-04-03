@@ -13,10 +13,22 @@ namespace ECommerce.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> objList = _db.Categories.ToList();
+            List<Category> objList =  _db.Categories.ToList();
             Console.WriteLine("It's Demo");
             Console.Write(objList);
-            return View("categoryIndex");
+            return View("categoryIndex",objList);
+        }
+        public IActionResult Create() {
+            return View("categoryCreate");
+        }
+
+        [HttpPost]
+        public IActionResult Create(Category formData)
+        {
+            _db.Categories.Add(formData);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+            /*reurn View("categoryCreate");*/
         }
     }
 }
