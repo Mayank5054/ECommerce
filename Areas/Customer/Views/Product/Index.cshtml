@@ -53,7 +53,7 @@
         </div>
         <div class="col-2 d-flex align-items-center justify-content-center">
                 <a asp-action="Edit" asp-route-id="@obj.BookId" class="btn btn-info w-100">Edit</a>
-            <a asp-action="Delete" asp-route-id="@obj.BookId" class="btn btn-info w-100">Delete</a>
+            <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modal">Delete</button>
         </div>
     </div>
         <div class="modal" id="modal">
@@ -70,4 +70,9 @@
             </div>
         </div>
     
+    }
+    @section Scripts {
+        @{
+            <partial name="_ValidationScriptsPartial" />
+        }
     }
