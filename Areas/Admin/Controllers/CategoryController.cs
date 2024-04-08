@@ -1,10 +1,12 @@
-﻿using ECommerce.Data;
+﻿using ECommerce.DataAccess.Data;
+using ECommerce.DataAccess.Data;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SqlServer.Server;
-namespace ECommerce.Controllers
+namespace ECommerce.Areas.Admin.Controllers
 {
-    public class CategoryController :Controller
+    [Area("Admin")]
+    public class CategoryController : Controller
     {
         public readonly ApplicationDbContext _db;
         public CategoryController(ApplicationDbContext db)
@@ -14,12 +16,13 @@ namespace ECommerce.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> objList =  _db.Categories.ToList();
+            List<Category> objList = _db.Categories.ToList();
             Console.WriteLine("It's Demo");
             Console.Write(objList);
-            return View("categoryIndex",objList);
+            return View("categoryIndex", objList);
         }
-        public IActionResult Create() {
+        public IActionResult Create()
+        {
             return View("categoryCreate");
         }
 
@@ -39,10 +42,10 @@ namespace ECommerce.Controllers
             return View("categoryCreate");
         }
 
-        public IActionResult Edit(int id) 
+        public IActionResult Edit(int id)
         {
             Category obj = _db.Categories.Find(id);
-            return View("categoryEdit",obj);
+            return View("categoryEdit", obj);
         }
 
         [HttpPost]
@@ -61,10 +64,10 @@ namespace ECommerce.Controllers
             }
         }
 
-       
-     
+
+
         public IActionResult Delete(int id)
-       
+
         {
             Category obj = _db.Categories.Find(id);
             _db.Categories.Remove(obj);

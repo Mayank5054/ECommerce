@@ -1,4 +1,4 @@
-using ECommerce.Data;
+using ECommerce.DataAccess.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
- options => {
+ options =>
+ {
      var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
      var sqlServerConnectionBuilder = new SqlConnectionStringBuilder(connectionString);
      sqlServerConnectionBuilder.UserID = "sa";
@@ -36,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
