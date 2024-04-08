@@ -1,0 +1,73 @@
+﻿@model List<Product>
+
+<div class="container">
+    <div class="row pt-2 pb-2 ">
+        <div class="col-12 d-flex align-items-center justify-content-between">
+            <h3>Books</h3>
+            <a asp-action="Create" class="btn btn-primary d-inline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg> Add A New Book
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row pt-2 pb-2 mb-2" style="border:1px solid white">
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            Book title
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+            Description
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+            ISBN
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+           Author
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+            Price
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+           Order
+        </div>
+    </div>
+    @foreach(var obj in Model){
+    <div class="row pt-2 pb-2 mb-1" style="border:1px solid white">
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            @obj.BookTitle
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
+            @obj.Description
+        </div>
+        <div class="col-2 d-flex " style="border-left:1px solid white">
+            @obj.ISBN
+        </div>
+            <div class="col-2 d-flex " style="border-left:1px solid white">
+           @obj.Author
+        </div>
+            <div class="col-2 d-flex " style="border-left:1px solid white">
+            @obj.Price
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+                <a asp-action="Edit" asp-route-id="@obj.BookId" class="btn btn-info w-100">Edit</a>
+            <a asp-action="Delete" asp-route-id="@obj.BookId" class="btn btn-info w-100">Delete</a>
+        </div>
+    </div>
+        <div class="modal" id="modal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-inline">
+                        <h5>Are You Sure ?</h5>
+                        <div class="d-inline">
+                            <a asp-action="Delete" class=" btn btn-primary" asp-route-id="@obj.BookId"> Yes</a>
+                            <button data-bs-dismiss="modal" class=" btn btn-secondary">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    }
