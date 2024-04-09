@@ -41,6 +41,16 @@
                 <a asp-action="Index" class="btn btn-secondary w-100">Back To Products</a>
             </div>
         </div>
+        <div>
+            <div>
+                <select asp-for="category.Name"  >
+                    <option value="Action" selected='@(Model.category.Name == "Action")'>Action</option>
+                    <option value="Sci-Fi" selected='@(Model.category.Name == "Sci-Fi")'>Sci - Fi</option>
+                    <option value="History" selected='@(Model.category.Name == "History")'>History</option>
+                </select>
+            </div>
+
+        </div>
     </form>
 </div>
 @section Scripts {

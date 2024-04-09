@@ -51,10 +51,15 @@
             <div class="col-2 d-flex " style="border-left:1px solid white">
             @obj.Price
         </div>
+       
+        <div class="col-2 d-flex " style="border-left:1px solid white">
+            @obj.category.Name
+        </div>
         <div class="col-2 d-flex align-items-center justify-content-center">
                 <a asp-action="Edit" asp-route-id="@obj.BookId" class="btn btn-info w-100">Edit</a>
             <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modal">Delete</button>
         </div>
+
     </div>
         <div class="modal" id="modal">
             <div class="modal-dialog modal-dialog-centered">
