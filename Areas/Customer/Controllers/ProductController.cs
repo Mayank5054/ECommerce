@@ -11,10 +11,11 @@ namespace ECommerce.Areas.Customer.Controllers
     public class ProductController :Controller
     {
         private readonly ApplicationDbContext _db;
-
-        public ProductController(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -31,12 +32,22 @@ namespace ECommerce.Areas.Customer.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(Product product, IFormFile file)
         {
+            Console.WriteLine(file);
             Category c1 = _db.Categories
                 .Where(c => c.CategoryId == (int)product.CategoryId)
                 .FirstOrDefault();
             product.category = c1;
+            string webRoot = _webHostEnvironment.WebRootPath;
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filepath = Path.Combine(webRoot,@"Images\Products");
+            Console.WriteLine(Path.Combine(filepath,fileName));
+            using (var fileStream = new FileStream(Path.Combine(filepath, fileName), FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+            product.imageUrl = @"\Images\Products\"+fileName;
             _db.Products.Add(product);
             _db.SaveChanges();
             return RedirectToAction("Index");
@@ -54,7 +65,7 @@ namespace ECommerce.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(Product product, IFormFile file)
         {
             Category c1 = _db.Categories
                 .Where(c => c.CategoryId == (int)product.CategoryId)
@@ -62,9 +73,30 @@ namespace ECommerce.Areas.Customer.Controllers
             Product p1 = _db.Products.Include(_ => _.category)
                 .Where(_ => _.BookId == product.BookId)
                 .FirstOrDefault();
+            Console.WriteLine(file);
 
+            if (file != null)
 
-
+            {
+                string webRoot = _webHostEnvironment.WebRootPath;
+                string fileName1 = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string newPath = Path.Combine(webRoot, @"Images\Products");
+                var oldPath = Path.Combine(webRoot,product.imageUrl.TrimStart('\\'));
+              
+                if (System.IO.File.Exists(oldPath))
+                {
+                    System.IO.File.Delete(oldPath);
+                    using (var fileStream = new FileStream(Path.Combine(newPath, fileName1), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                        p1.imageUrl = @"\Images\Products\" + fileName1;
+                    }
+                }
+            }
+            else
+            {
+                p1.imageUrl = product.imageUrl;
+            }
             if (p1 != null)
             {
                 p1.BookTitle = product.BookTitle;
