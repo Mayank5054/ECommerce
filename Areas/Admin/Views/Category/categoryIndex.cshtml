@@ -52,23 +52,23 @@
                     <a asp-action="Edit" asp-route-id="@obj.CategoryId" class="btn btn-info w-100" >Edit</a>
                 </div>
                 <div class="col-3 d-flex ">
-                    <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-secondary w-100">Delete</button>
+                    <button data-bs-toggle="modal" data-bs-target="#modal" onclick="openModal(@obj.CategoryId)" class="btn btn-secondary w-100">Delete</button>
                 </div>
             </div>
-            <div class="modal" id="modal">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body d-inline">
-                            <h5>Are You Sure ?</h5>
-                            <div class="d-inline">
-                                    <a asp-action="Delete" class=" btn btn-primary" asp-route-id="@obj.CategoryId"> Yes</a>
-                                <button data-bs-dismiss="modal" class=" btn btn-secondary">No</button>
-                               </div>
+        }
+        <div class="modal" id="modal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-inline">
+                        <h5>Are You Sure ?</h5>
+                        <div class="d-inline">
+                            <a asp-action="Delete" class=" btn btn-primary" id="deleteBtnYes"> Yes</a>
+                            <button data-bs-dismiss="modal" class=" btn btn-secondary">No</button>
                         </div>
                     </div>
                 </div>
             </div>
-        }
+        </div>
         </div>
     
     </body>
@@ -76,6 +76,9 @@
 
 @section scripts{
     <script>
-     
+        function openModal(id) {
+            const yes = document.getElementById("deleteBtnYes");
+            yes.setAttribute("href", yes.href + "/" + id);
+        }
     </script>
 }
