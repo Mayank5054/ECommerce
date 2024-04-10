@@ -18,9 +18,13 @@
             <span class="span1 text-danger" asp-validation-for="BookTitle"></span>
         </div>
         <div class="form-floating mt-2">
-            <input asp-for="Description" class="form-control cname" placeholder="" />
-            <label asp-for="Description" for="cname"></label>
-            <span class="span1 text-danger" asp-validation-for="Description"></span>
+            @* <input asp-for="Description" class="form-control cname" placeholder="" />
+            <label asp-for="Description" for="cname"></label> *@
+            @* <span class="span1 text-danger" asp-validation-for="Description"></span> *@
+            <label asp-for="Description" for="cname">Description</label>
+            <textarea asp-for="Description">
+
+            </textarea>
         </div>
         <div class="form-floating mt-2">
             <input asp-for="ISBN" class="form-control cname" placeholder="" />
@@ -38,7 +42,19 @@
             <span class="span1 text-danger" asp-validation-for="Price"></span>
         </div>
         <div>
-            <input type="file" name="file"/>
+            <div class="mb-3">
+                <label class="form-label mt-3">Upload Cover Image</label>
+                <input type="file"
+                       class="form-control"
+                       name="file" />
+                <div id="fileHelpId" class="form-text"></div>
+            </div>
+           
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Category</label>
+            <select class="form-select form-select-lg" asp-for="CategoryId" asp-items="ViewBag.categoryList">
+            </select>
         </div>
         <div class="row mt-3">
             <div class="col-6 d-flex">
@@ -48,20 +64,36 @@
                 <a asp-action="Index" class="btn btn-secondary w-100">Back To Products</a>
             </div>
         </div>
-        <div>
+      
+       @*  <div>
             <div>
                 <select asp-for="CategoryId" asp-items="ViewBag.categoryList" >
                     @* <option value="Action" selected='@(Model.category.Name == "Action")'>Action</option>
                     <option value="Sci-Fi" selected='@(Model.category.Name == "Sci-Fi")'>Sci - Fi</option>
-                    <option value="History" selected='@(Model.category.Name == "History")'>History</option> *@
+                    <option value="History" selected='@(Model.category.Name == "History")'>History</option> 
                 </select>
             </div>
 
-        </div>
+        </div> *@
     </form>
 </div>
 @section Scripts {
+    <script src="https://cdn.tiny.cloud/1/xo52x7n2xro0m0hqq042jm5h84boz9g4631z9xs0ug02acnm/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     @{
         <partial name="_ValidationScriptsPartial" />
     }
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons   lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>
 }
