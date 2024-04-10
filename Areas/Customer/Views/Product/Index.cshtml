@@ -14,7 +14,7 @@
     </div>
 </div>
 <div class="container">
-    <div class="row pt-2 pb-2 mb-2" style="border:1px solid white">
+    @* <div class="row pt-2 pb-2 mb-2" style="border:1px solid white">
         <div class="col-2 d-flex align-items-center justify-content-center">
             Book title
         </div>
@@ -33,13 +33,28 @@
         <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
            Order
         </div>
-    </div>
+    </div> *@
     @foreach(var obj in Model){
-        <div>
-            <img src="@obj.imageUrl" style="height:200px;width:auto;"/>
-        </div>
+        
     <div class="row pt-2 pb-2 mb-1" style="border:1px solid white">
-        <div class="col-2 d-flex align-items-center justify-content-center">
+            <div class="col-md-3">
+                <img src="@obj.imageUrl" style="height:300px;width:auto;" />
+            </div>
+            <div class="col-md-8">
+                <p class="h1"> @obj.BookTitle</p>
+                <p clsss="" style="max-width:80%">@obj.Description</p>
+                <p clsss="" style="max-width:80%">@obj.ISBN</p>
+                <p class="d-flex align-items-center mt-0 me-0">
+                    <span class="" style="font-size:25px" >By</span>
+                    <span class="display-4 ms-2">@obj.Author</span>
+                </p>
+                <p class="h1 ms-0">$ @obj.Price</p>
+                <p class="d-flex m-0 p-0" style="width:50%">
+                    <a asp-action="Edit"  asp-route-id="@obj.BookId" class="btn btn-primary w-100">Edit</a>
+                    <button type="button" class="btn btn-info w-100 ms-1" data-bs-toggle="modal" data-bs-target="#modal" onclick="openModal(@obj.BookId)">Delete</button>
+        </p>
+            </div>
+        @* <div class="col-2 d-flex align-items-center justify-content-center">
             @obj.BookTitle
         </div>
         <div class="col-2 d-flex align-items-center justify-content-center" style="border-left:1px solid white">
@@ -57,11 +72,11 @@
        
         <div class="col-2 d-flex " style="border-left:1px solid white">
             @obj.category.Name
-        </div>
-        <div class="col-2 d-flex align-items-center justify-content-center">
+        </div> *@
+    @*     <div class="col-2 d-flex align-items-center justify-content-center">
                 <a asp-action="Edit" asp-route-id="@obj.BookId" class="btn btn-info w-100">Edit</a>
             <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modal" onclick="openModal(@obj.BookId)">Delete</button>
-        </div>
+        </div> *@
 
     </div>
     }
@@ -71,7 +86,7 @@
                 <div class="modal-body d-inline">
                     <h5>Are You Sure ?</h5>
                     <div class="d-inline">
-                        <a asp-action="Delete" class=" btn btn-primary" id="deleteBtnYes"> Yes</a>
+                        <button  class=" btn btn-primary" id="deleteBtnYes"> Yes</button>
                         <button data-bs-dismiss="modal" class=" btn btn-secondary">No</button>
                     </div>
                 </div>
@@ -81,12 +96,40 @@
 
     @section Scripts {
         @{
-            <partial name="_ValidationScriptsPartial" />
+                                                <partial name="_ValidationScriptsPartial" />
         }
         <script>
             function openModal(id) {
                 const yes = document.getElementById("deleteBtnYes");
-                yes.setAttribute("href",yes.href+"/"+id);
+                yes.setAttribute("onclick", `makeAnDeleteRequest(${id})`);
+            }
+            function makeAnDeleteRequest(id){
+
+                // fetch("./Product/Delete/ ", {
+                //     method: "DELETE",
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({ id: id })
+                // })
+                //     .then(respone => response.json())
+                //     .then(result => {
+                //         if (response.success) {
+                //             alert(response.message);
+                //             window.location.href = './Product';
+                //         }
+                //     })
+                //     .catch(err => { console.log(err) });
+                $.ajax({
+                    url: './Product/Delete/'+id,
+                    type:"DELETE",
+                    success: function (response) {
+                        if(response.success){
+                            alert(response.message);
+                            window.location.href = './Product';
+                        }
+                    }
+                })
             }
          </script>
     }

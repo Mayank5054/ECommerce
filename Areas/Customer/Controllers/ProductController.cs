@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 namespace ECommerce.Areas.Customer.Controllers
 {
     [Area("Customer")]
@@ -12,6 +13,8 @@ namespace ECommerce.Areas.Customer.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private string? imagePath;
+
         public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
@@ -116,9 +119,15 @@ namespace ECommerce.Areas.Customer.Controllers
         public IActionResult Delete(int id)
         {
             Product product = _db.Products.Find(id);
+            string webRoot = _webHostEnvironment.WebRootPath;
+            string imagePath = Path.Combine(webRoot, product.imageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
             _db.Products.Remove(product);
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { success=true,message="Product Deleted"});
         }
     }
 }
