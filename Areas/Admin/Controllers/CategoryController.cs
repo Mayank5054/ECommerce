@@ -12,11 +12,13 @@ namespace ECommerce.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         public readonly ApplicationDbContext _db;
+        
         public CategoryController(ApplicationDbContext db)
         {
             _db = db;
             Console.WriteLine(_db);
         }
+        
         public IActionResult Index()
         {
             List<Category> objList = _db.Categories.ToList();
@@ -24,11 +26,12 @@ namespace ECommerce.Areas.Admin.Controllers
             Console.Write(objList);
             return View("categoryIndex", objList);
         }
+       
         public IActionResult Create()
         {
             return View("categoryCreate");
         }
-
+        
         [HttpPost]
         public IActionResult Create(Category formData)
         {
@@ -44,13 +47,12 @@ namespace ECommerce.Areas.Admin.Controllers
             }
             return View("categoryCreate");
         }
-
+        
         public IActionResult Edit(int id)
         {
             Category obj = _db.Categories.Find(id);
             return View("categoryEdit", obj);
         }
-
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
@@ -66,9 +68,7 @@ namespace ECommerce.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-
-
+       
         public IActionResult Delete(int id)
 
         {
