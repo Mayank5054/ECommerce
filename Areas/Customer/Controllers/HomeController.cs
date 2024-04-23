@@ -20,7 +20,7 @@ namespace ECommerce.Areas.Customer.Controllers
         public IActionResult Index()
         {
             List<Product> products = _db.Products.ToList();
-            return View(products);
+            return View();
             
         }
 
